@@ -1,25 +1,34 @@
-// src/EmployeeList.js
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./App.css";
 
-function EmployeeList({ employees }) {
+function EmployeeList(props) {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter employees based on search term
+  const filteredEmployees = props.employees.filter((employee) =>
+    employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="employee-list">
       <h1>Employee List</h1>
-      {employees.length === 0 ? (
-        <p>No employees available. Please add one using the form.</p>
-      ) : (
-        <ul>
-          {employees.map((employee) => (
-            <li key={employee.id}>
-              <Link to={`/employees/${employee.id}`}>
-                {employee.name} — {employee.position}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+
+      {/* Search Input */}
+      <input
+        type="text"
+        placeholder="Search employees..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ marginBottom: "15px", padding: "8px", width: "80%" }}
+      />
+
+      <ul>
+        {filteredEmployees.map((employee) => (
+          <li key={employee.EmployeeId}>
+            <Link to={`/employees/${employee.EmployeeId}`}>{employee.name}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
